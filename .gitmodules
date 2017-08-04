@@ -1,0 +1,4 @@
+[submodule "MapleLib"]
+	path = MapleLib
+	url = git@github.com:haha01haha01/MapleLib.git
+	branch = master
