@@ -1,0 +1,11 @@
+// Add quest IDs or ranges (X-Y) that you wantto exclude from patching here.
+// Lines starting with "//" and whitespaces will not be read.
+
+// Vanishing Journey dailies.
+3528
+30027
+34129-34150
+
+// Maple Legion
+16011
+16012
