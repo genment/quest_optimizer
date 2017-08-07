@@ -1,6 +1,4 @@
 ### Build status
-[![Build status](https://ci.appveyor.com/api/projects/status/xoo7yvp9yco9rl2m?svg=true)](https://ci.appveyor.com/project/shavitush/quest-optimizer)
-
 # [Download](https://github.com/shavitush/quest_optimizer/releases/latest)
 
 # Quest Optimizer
