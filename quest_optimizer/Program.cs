@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MapleLib.WzLib;
+using MapleLib.WzLib.WzProperties;
 
 namespace quest_optimizer
 {
@@ -14,6 +15,7 @@ namespace quest_optimizer
 
             bool silent = false;
             bool autoupdate = true;
+            bool searchmode = false;
 
             foreach(string arg in args)
             {
@@ -24,6 +26,9 @@ namespace quest_optimizer
                         break;
                     case "-noupdate":
                         autoupdate = false;
+                        break;
+                    case "-searchmode":
+                        searchmode = true;
                         break;
                 }
             }
@@ -45,6 +50,12 @@ namespace quest_optimizer
                 Console.WriteLine("Quest.wz is missing.");
                 Console.ReadLine();
 
+                return;
+            }
+
+            if(searchmode)
+            {
+                SearchMode();
                 return;
             }
 
@@ -187,6 +198,86 @@ namespace quest_optimizer
             }
 
             return temp;
+        }
+
+        static void SearchMode()
+        {
+            Console.WriteLine("Loading Quest.wz ...");
+
+            using(var questwz = new WzFile("Quest.wz", WzMapleVersion.BMS))
+            {
+                questwz.ParseWzFile();
+                var all = questwz.WzDirectory.GetImageByName("QuestInfo.img").WzProperties;
+
+                while(true)
+                {
+                    Console.Write(Environment.NewLine + "Enter the quest's ID or Name that you want to search for (enter 'qq' to quit): ");
+                    string searchStr = Console.ReadLine().ToLower();
+                    Console.WriteLine();
+
+                    if(string.IsNullOrEmpty(searchStr) || string.IsNullOrWhiteSpace(searchStr))
+                    {
+                        continue;
+                    }
+
+                    if("qq".Equals(searchStr))
+                    {
+                        break;
+                    }
+
+                    List<string> results = new List<string>();
+
+                    foreach(var item in all)
+                    {
+                        var id = item.Name;
+                        var name = ((WzStringProperty)item["name"])?.GetString();
+                        if(name == null)
+                        {
+                            continue; // fuck id=7704
+                        }
+                        if(name.ToLower().Contains(searchStr) || id.Contains(searchStr))
+                        {
+                            results.Add(id + " // " + name);
+                        }
+                    }
+
+                    foreach(var item in results)
+                    {
+                        Console.WriteLine(item);
+                    }
+
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.WriteLine($"--- Found Quests: {results.Count}" + Environment.NewLine);
+                    Console.ForegroundColor = ConsoleColor.White;
+
+                    if(results.Count > 0)
+                    {
+                        Console.Write("Save the results into a file? (y/n): ");
+                        string save = Console.ReadLine();
+
+                        if("y".Equals(save.ToLower()))
+                        {
+                            SaveSearchResult(searchStr, results);
+                        }
+                    }
+                }
+            }
+        }
+
+        static void SaveSearchResult(string name, List<string> results)
+        {
+            string filename = "result-" + name + ".txt";
+            if(File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+            string[] split = new string[] { " // " };
+            File.WriteAllLines(filename, results.Select(item =>
+                "// " + string.Join(Environment.NewLine, item.Split(split, StringSplitOptions.RemoveEmptyEntries).Reverse())).ToArray());
+
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"--- Saved: {Environment.CurrentDirectory}\\{filename}" + Environment.NewLine);
+            Console.ForegroundColor = ConsoleColor.White;
         }
     }
 }
