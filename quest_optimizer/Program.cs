@@ -17,9 +17,9 @@ namespace quest_optimizer
             bool autoupdate = true;
             bool searchmode = false;
 
-            foreach (string arg in args)
+            foreach(string arg in args)
             {
-                switch (arg)
+                switch(arg)
                 {
                     case "-silent":
                         silent = true;
@@ -33,19 +33,19 @@ namespace quest_optimizer
                 }
             }
 
-            if (!silent)
+            if(!silent)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Welcome to {Console.Title}!" + Environment.NewLine);
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
-            if (autoupdate)
+            if(autoupdate)
             {
                 AutoUpdater.StartUpdate();
             }
 
-            if (!File.Exists("Quest.wz"))
+            if(!File.Exists("Quest.wz"))
             {
                 Console.WriteLine("Quest.wz is missing.");
                 Console.ReadLine();
@@ -53,22 +53,22 @@ namespace quest_optimizer
                 return;
             }
 
-            if (searchmode)
+            if(searchmode)
             {
                 SearchMode();
                 return;
             }
 
-            if (File.Exists("Quest.wz.patched"))
+            if(File.Exists("Quest.wz.patched"))
             {
                 File.Delete("Quest.wz.patched");
             }
 
             var exclusions = ReadExclusions();
 
-            if (!silent)
+            if(!silent)
             {
-                if (exclusions.Count == 0)
+                if(exclusions.Count == 0)
                 {
                     Console.WriteLine("--- No quests will be excluded.");
                 }
@@ -95,18 +95,18 @@ namespace quest_optimizer
                 "SQuest.img"
             };
 
-            using (var questwz = new WzFile("Quest.wz", WzMapleVersion.BMS)) // for some reason GMS uses the BMS format..?
+            using(var questwz = new WzFile("Quest.wz", WzMapleVersion.BMS)) // for some reason GMS uses the BMS format..?
             {
                 questwz.ParseWzFile();
 
-                foreach (string image in delete)
+                foreach(string image in delete)
                 {
                     var img = questwz.WzDirectory.GetImageByName(image);
                     var original = img.WzProperties.ToList();
 
-                    foreach (var prop in original)
+                    foreach(var prop in original)
                     {
-                        if (!exclusions.Contains(int.Parse(prop.Name)))
+                        if(!exclusions.Contains(int.Parse(prop.Name)))
                         {
                             img.WzProperties.Remove(prop);
                         }
@@ -114,7 +114,7 @@ namespace quest_optimizer
 
                     img.Changed = true;
 
-                    if (!silent)
+                    if(!silent)
                     {
                         Console.WriteLine($"--- Cleaned {image} (entries: {original.Count - img.WzProperties.Count})");
                     }
@@ -122,7 +122,7 @@ namespace quest_optimizer
 
                 questwz.WzDirectory.ParseImages();
 
-                if (File.Exists("Quest.wz.bak"))
+                if(File.Exists("Quest.wz.bak"))
                 {
                     File.Delete("Quest.wz.bak");
                 }
@@ -130,14 +130,14 @@ namespace quest_optimizer
                 File.Copy("Quest.wz", "Quest.wz.bak");
                 questwz.SaveToDisk("Quest.wz.patched");
 
-                if (!silent)
+                if(!silent)
                 {
                     Console.ForegroundColor = ConsoleColor.Cyan;
                     Console.WriteLine(Environment.NewLine + "--- Saved patched file to Quest.wz.patched.");
                 }
             }
 
-            if (!silent)
+            if(!silent)
             {
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write(Environment.NewLine + "Finished patching!");
@@ -149,32 +149,32 @@ namespace quest_optimizer
         {
             var temp = new List<int>();
 
-            if (!File.Exists("exclude.txt"))
+            if(!File.Exists("exclude.txt"))
             {
                 return temp;
             }
 
             try
             {
-                foreach (string line in File.ReadLines("exclude.txt"))
+                foreach(string line in File.ReadLines("exclude.txt"))
                 {
-                    if (line.StartsWith("//") || string.IsNullOrWhiteSpace(line))
+                    if(line.StartsWith("//") || string.IsNullOrWhiteSpace(line))
                     {
                         continue;
                     }
 
                     string final = line.Trim();
 
-                    if (final.Contains("-"))
+                    if(final.Contains("-"))
                     {
                         string[] split = final.Split('-');
 
-                        if (split.Length > 0)
+                        if(split.Length > 0)
                         {
                             int start = int.Parse(split[0]);
                             int end = int.Parse(split[1]);
 
-                            for (int i = start; i <= end; i++)
+                            for(int i = start; i <= end; i++)
                             {
                                 temp.Add(i);
                             }
@@ -190,7 +190,7 @@ namespace quest_optimizer
                 temp.Sort();
             }
 
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine($"--- ERROR: {ex.Message}!");
@@ -204,58 +204,58 @@ namespace quest_optimizer
         {
             Console.WriteLine("Loading Quest.wz ...");
 
-            using (var questwz = new WzFile("Quest.wz", WzMapleVersion.BMS))
+            using(var questwz = new WzFile("Quest.wz", WzMapleVersion.BMS))
             {
                 questwz.ParseWzFile();
                 var all = questwz.WzDirectory.GetImageByName("QuestInfo.img").WzProperties;
 
-                while (true)
+                while(true)
                 {
                     Console.Write(Environment.NewLine + "Enter the quest's ID or Name that you want to search for (enter 'qq' to quit): ");
                     string searchStr = Console.ReadLine().ToLower();
                     Console.WriteLine();
 
-                    if (string.IsNullOrEmpty(searchStr) || string.IsNullOrWhiteSpace(searchStr))
+                    if(string.IsNullOrEmpty(searchStr) || string.IsNullOrWhiteSpace(searchStr))
                     {
                         continue;
                     }
 
-                    if ("qq".Equals(searchStr))
+                    if("qq".Equals(searchStr))
                     {
                         break;
                     }
 
                     List<string> results = new List<string>();
 
-                    foreach (var item in all)
+                    foreach(var item in all)
                     {
                         var id = item.Name;
                         var name = ((WzStringProperty)item["name"])?.GetString();
-                        if (name == null)
+                        if(name == null)
                         {
                             continue; // fuck id=7704
                         }
-                        if (name.ToLower().Contains(searchStr) || id.Contains(searchStr))
+                        if(name.ToLower().Contains(searchStr) || id.Contains(searchStr))
                         {
                             results.Add(id + " // " + name);
                         }
                     }
 
-                    foreach (var item in results)
+                    foreach(var item in results)
                     {
                         Console.WriteLine(item);
                     }
 
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.WriteLine($"--- Found Quests: {results.Count}!" + Environment.NewLine);
+                    Console.WriteLine($"--- Found Quests: {results.Count}" + Environment.NewLine);
                     Console.ForegroundColor = ConsoleColor.White;
 
-                    if (results.Count > 0)
+                    if(results.Count > 0)
                     {
                         Console.Write("Save the results into a file? (y/n): ");
                         string save = Console.ReadLine();
 
-                        if ("y".Equals(save.ToLower()))
+                        if("y".Equals(save.ToLower()))
                         {
                             SaveSearchResult(searchStr, results);
                         }
@@ -267,7 +267,7 @@ namespace quest_optimizer
         static void SaveSearchResult(string name, List<string> results)
         {
             string filename = "result-" + name + ".txt";
-            if (File.Exists(filename))
+            if(File.Exists(filename))
             {
                 File.Delete(filename);
             }

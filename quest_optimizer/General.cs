@@ -10,7 +10,7 @@
         /// <summary>
         /// Program version.
         /// </summary>
-        public const float Version = 1.0f;
+        public const float Version = 1.1f;
 
         /// <summary>
         /// Path to the application's repository on GitHub.
