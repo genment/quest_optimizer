@@ -30,22 +30,22 @@ namespace quest_optimizer
                 switch(arg)
                 {
                     case "-silent":
-                    {
-                        silent = true;
-                        break;
-                    }
-                    
+                        {
+                            silent = true;
+                            break;
+                        }
+
                     case "-noupdate":
-                    {
-                        autoupdate = false;
-                        break;
-                    }
-                    
+                        {
+                            autoupdate = false;
+                            break;
+                        }
+
                     case "-searchmode":
-                    {
-                        SearchMode();
-                        return;
-                    }
+                        {
+                            SearchMode();
+                            return;
+                        }
                 }
             }
 
@@ -232,6 +232,14 @@ namespace quest_optimizer
 
                     if(string.IsNullOrEmpty(searchStr) || string.IsNullOrWhiteSpace(searchStr))
                     {
+                        continue;
+                    }
+
+                    if(searchStr.Length < 2)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"--- ERROR: Make sure your keyword is longer than 2 letters!");
+                        Console.ForegroundColor = ConsoleColor.White;
                         continue;
                     }
 
