@@ -14,23 +14,38 @@ namespace quest_optimizer
         {
             Console.Title = $"{General.Name} (v{General.Version.ToString("0.0")})";
 
+            if(!File.Exists("Quest.wz"))
+            {
+                Console.WriteLine("Quest.wz is missing.");
+                Console.ReadLine();
+
+                return;
+            }
+
             bool silent = false;
             bool autoupdate = true;
-            bool searchmode = false;
 
             foreach(string arg in args)
             {
                 switch(arg)
                 {
                     case "-silent":
+                    {
                         silent = true;
                         break;
+                    }
+                    
                     case "-noupdate":
+                    {
                         autoupdate = false;
                         break;
+                    }
+                    
                     case "-searchmode":
-                        searchmode = true;
-                        break;
+                    {
+                        SearchMode();
+                        return;
+                    }
                 }
             }
 
@@ -44,20 +59,6 @@ namespace quest_optimizer
             if(autoupdate)
             {
                 AutoUpdater.StartUpdate();
-            }
-
-            if(!File.Exists("Quest.wz"))
-            {
-                Console.WriteLine("Quest.wz is missing.");
-                Console.ReadLine();
-
-                return;
-            }
-
-            if(searchmode)
-            {
-                SearchMode();
-                return;
             }
 
             if(File.Exists("Quest.wz.patched"))
@@ -76,7 +77,18 @@ namespace quest_optimizer
 
                 else
                 {
-                    Console.WriteLine($"--- Excluded quests: {string.Join(", ", exclusions)}.");
+                    if(exclusions.Count > 50)
+                    {
+                        var fifty = exclusions.ToList();
+                        fifty.RemoveRange(50, fifty.Count - 50);
+
+                        Console.WriteLine($"--- Excluded quests: {string.Join(", ", fifty)}... and {exclusions.Count - 50} more!");
+                    }
+
+                    else
+                    {
+                        Console.WriteLine($"--- Excluded quests: {string.Join(", ", exclusions)}.");
+                    }
                 }
 
                 Console.WriteLine(Environment.NewLine + "About to iterate through Quest.wz now." + Environment.NewLine);
@@ -84,7 +96,6 @@ namespace quest_optimizer
 
             var delete = new List<string>
             {
-                // i've left the CPU demanding parts uncommented, the rest aren't very bad at all
                 "Act.img",
                 "Check.img",
                 "Exclusive.img",
@@ -110,12 +121,15 @@ namespace quest_optimizer
                         if(!exclusions.Contains(int.Parse(prop.Name)))
                         {
                             img.WzProperties.Remove(prop);
+
+                            if(!img.Changed)
+                            {
+                                img.Changed = true;
+                            }
                         }
                     }
 
-                    img.Changed = true;
-
-                    if(!silent)
+                    if(!silent && img.Changed)
                     {
                         Console.WriteLine($"--- Cleaned {image} (entries: {original.Count - img.WzProperties.Count})");
                     }
@@ -226,16 +240,18 @@ namespace quest_optimizer
                         break;
                     }
 
-                    List<Tuple<int, string>> results = new List<Tuple<int, string>>();
+                    var results = new List<Tuple<int, string>>();
 
                     foreach(var item in all)
                     {
-                        var id = item.Name;
-                        var name = ((WzStringProperty)item["name"])?.GetString();
+                        string id = item.Name;
+                        string name = ((WzStringProperty)item["name"])?.GetString();
+
                         if(name == null)
                         {
-                            continue; // fuck id=7704
+                            continue;
                         }
+
                         if(name.ToLower().Contains(searchStr) || id.Contains(searchStr))
                         {
                             results.Add(new Tuple<int, string>(int.Parse(id), name));
@@ -270,16 +286,17 @@ namespace quest_optimizer
             }
         }
 
-        static void SaveSearchResult(string name, List<Tuple<int, string>> results, bool simple)
+        static void SaveSearchResult(string name, List<Tuple<int, string>> results, bool range)
         {
-            string filename = "result-" + name + ".txt";
+            string filename = $"result-{name}.txt";
+
             if(File.Exists(filename))
             {
                 File.Delete(filename);
             }
-            if(simple)
+            if(range)
             {
-                List<string> converted = MakeItShorter(results);
+                List<string> converted = MakeRange(results);
                 File.WriteAllLines(filename, converted.ToArray());
             }
             else
@@ -294,10 +311,10 @@ namespace quest_optimizer
             Console.ForegroundColor = ConsoleColor.White;
         }
 
-        static List<string> MakeItShorter(List<Tuple<int, string>> list)
+        static List<string> MakeRange(List<Tuple<int, string>> list)
         {
             int pointer = 0;
-            List<int[]> rangelist = new List<int[]>();
+            var rangelist = new List<int[]>();
 
             int[] range = new int[2] {
                 list[0].Item1,
@@ -322,7 +339,7 @@ namespace quest_optimizer
                     ++pointer;
                 }
             }
-            List<string> converted = new List<string>();
+            var converted = new List<string>();
             string line;
             foreach(var item in rangelist)
             {
