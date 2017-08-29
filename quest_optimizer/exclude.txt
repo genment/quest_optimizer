@@ -1,20 +1,32 @@
 // Add quest IDs or ranges (X-Y) that you want to exclude from patching here.
 // Lines starting with "//" and whitespaces will not be read.
+//
+// This is a sample list, it's recommended to save your own copy.
 
-// Pink Bean
-3500-3556
+// Temple of Time (Pink Bean)
+3500-3527
+3529-3556
 
-// Root Abyss
+// [Pink Bean] Breaking the Force Field (BOSS)
+3528
+
+// [Gollux] The Face of Fear
+17534
+
+// [Root Abyss] Gnarled Wooden Key
 30027
 
-// Vanishing Journey
+// Vanishing Journey (34120 is required!!!)
+34120
 34129-34150
 
 // Dark World Tree
 15417-15420
+15708
 
 // Scrapyard
 39101-39164
+39209
 
 // Kritias
 32429-32488
@@ -28,9 +40,6 @@
 
 // Yu Garden Dailies
 62170-62199
-
-// Gollux Key
-17534
 
 // Mr. Lee Airlines
 // Beasts of the Deserted Island
@@ -65,16 +74,10 @@
 5867-5893
 5980-5994
 26427-26442
-26509-26595
+26509-26532
+26594
+26595
 61144
-
-// Override Event
-16030-16096
-62432-62437
-15932-15942
-
-// Eluna
-63290-63709
 
 // Misc Dailies (Fishing, DWT, etc.)
 14599
@@ -91,3 +94,51 @@
 
 // Deia's G-potion
 26000
+
+////////////////// GMS v187 Events //////////////////
+
+// [Override] Event
+16030
+16031
+16039
+16044-16049
+16086
+16093
+61577
+61578
+62432-62437
+62440
+
+// [Festival] Event
+16042
+16108
+16109
+16111
+16112
+16113
+16117
+16118
+
+// [Eluna] Event
+// Eluna Challenge Log
+63290-63309
+63316-63337
+// [Eluna] Harness the Power of Elunarium
+63435
+// Elunarium Item Drop
+63540-63547
+// Others (If you are not sure, just leave them in your quest.wz)
+63430-63433
+63436-63439
+63533
+63534
+63540-63547
+63552-63585
+63599-63606
+63608-63637
+63639-63657
+63670-63709
+
+// [Monster Collection Event]
+16082
+16083
