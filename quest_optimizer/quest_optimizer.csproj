@@ -59,6 +59,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="JobAdvancement.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="maple.ico" />
     <Content Include="exclude.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
