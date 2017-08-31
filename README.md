@@ -11,11 +11,7 @@ Before applying game upgrades (patches) or to revert this patch, do the same as 
 
 # Search Mode
 In order to search some quest's id, please use this program in search mode:
-1. Hold down the *Shift* key and right-click where this program is in, click `Open command window here` on the context menu.
-2. Enter command like this:
-```
-quest_optimizer.exe -searchmode
-```
+Just double-click `search_mode.bat`.
 
 # Build
 - Needs [MapleLib](https://github.com/haha01haha01/MapleLib). I do it with Visual Studio 2017, cannot guarantee success with any other .NET compilers.
