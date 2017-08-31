@@ -41,6 +41,9 @@
 // Yu Garden Dailies
 62170-62199
 
+// Yu Garden Totems
+62128-62130
+
 // Mr. Lee Airlines
 // Beasts of the Deserted Island
 5765
@@ -95,50 +98,49 @@
 // Deia's G-potion
 26000
 
-////////////////// GMS v187 Events //////////////////
+// Inferno Wolf & Pollo & Fritto
+15144-15145
+15148-15149
+49016-49018
 
-// [Override] Event
-16030
-16031
-16039
-16044-16049
-16086
-16093
-61577
-61578
-62432-62437
-62440
+// Title - Tot's Pupil
+61208
+// Tot's Guide
+61586-61590
 
-// [Festival] Event
-16042
-16108
-16109
-16111
-16112
-16113
-16117
-16118
+////////////////// GMS v188 Events //////////////////
 
-// [Eluna] Event
-// Eluna Challenge Log
-63290-63309
-63316-63337
-// [Eluna] Harness the Power of Elunarium
-63435
-// Elunarium Item Drop
-63540-63547
-// Others (If you are not sure, just leave them in your quest.wz)
-63430-63433
-63436-63439
-63533
-63534
-63540-63547
-63552-63585
-63599-63606
-63608-63637
-63639-63657
-63670-63709
+// Rainbow Event
+16087-16088
+16120-16128
 
-// [Monster Collection Event]
-16082
-16083
+// Club Event
+16129-16147
+16156
+16158
+
+// Titles (Rainbow & Club)
+16151-16155
+
+// Other Events
+16159-16168
+
+// [Event] Dice Master
+63371-63373
+// Title - Dice God
+63374
+
+// [Absolute Taste]
+63743-63744
+
+// [Moon Festival]
+15815-15818
+
+// The World Transfer event
+16056
+
+// [Maple Leaf High]
+52348-52367
+
+// Attendance Check
+61591-61592
