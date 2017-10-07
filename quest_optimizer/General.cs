@@ -10,11 +10,11 @@
         /// <summary>
         /// Program version.
         /// </summary>
-        public const float Version = 1.2f;
+        public const float Version = 1.3f;
 
         /// <summary>
         /// Path to the application's repository on GitHub.
         /// </summary>
-        public const string Repository = "shavitush/quest_optimizer";
+        public const string Repository = "genment/quest_optimizer";
     }
 }
